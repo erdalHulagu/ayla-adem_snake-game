@@ -4,12 +4,14 @@ const scoreText = document.querySelector("#scoreText");
 const resetBtn = document.querySelector("#resetBtn");
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
-const boardBackground = "rgb(214, 164, 205)";
 const snakeColor = "rgba(70, 240, 252, 0.8)";
 const snakeBorder = "gray";
 const foodColor = "hsla(309, 72%, 79%, 1.00)";
 const foodBorder = "purple";
-const unitSize = 25;
+
+// Küçültülmüş birim
+const unitSize = 15;
+
 let snakeSpeed = 250;
 let running = false;
 let xVelocity = unitSize;
@@ -27,12 +29,24 @@ let snake = [
 
 const img = new Image();
 img.src ="https://i.etsystatic.com/26056260/r/il/06e468/5379971060/il_1080xN.5379971060_kjk7.jpg";
+
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
-img.onload = function() {
-    gameStart();
-};
+img.onload = () => gameStart();
+
+// Mobil yön butonları
+document.querySelectorAll(".control-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const dir = btn.getAttribute("data-dir");
+    const event = new KeyboardEvent("keydown", {
+      keyCode: dir === "UP" ? 38 :
+               dir === "DOWN" ? 40 :
+               dir === "LEFT" ? 37 : 39
+    });
+    window.dispatchEvent(event);
+  });
+});
 
 function gameStart(){
     running= true;
@@ -40,7 +54,7 @@ function gameStart(){
     createFood();
     drawFood();
     nextTick();
-};
+}
 
 function nextTick(){
     if(running){
@@ -53,14 +67,12 @@ function nextTick(){
             nextTick();
         }, snakeSpeed);
     }
-    else{
-        displayGameOver();
-    }
-};
+    else displayGameOver();
+}
 
 function clearBoard(){
-    ctx.drawImage(img, 0, 0, gameBoard.width, gameBoard.height);
-};
+    ctx.drawImage(img, 0, 0, gameWidth, gameHeight);
+}
 
 function createFood(){
     function randomFood(min, max){
@@ -69,7 +81,7 @@ function createFood(){
     }
     foodX = randomFood(0, gameWidth - unitSize);
     foodY = randomFood(0, gameHeight - unitSize);
-};
+}
 
 function drawFood(){
     const gradient = ctx.createRadialGradient(
@@ -95,25 +107,19 @@ function drawFood(){
 }
 
 function moveSnake(){
-    const head = {x: snake[0].x + xVelocity,
-                  y: snake[0].y + yVelocity};
-    
+    const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity};
     snake.unshift(head);
-    if(snake[0].x == foodX && snake[0].y == foodY){
-        score+=1;
+
+    if(snake[0].x === foodX && snake[0].y === foodY){
+        score++;
         scoreText.textContent = score;
         createFood();
-        if(score % 5 === 0){
-            snakeSpeed = Math.max(30, snakeSpeed - 10); 
-        }
-    }
-    else{
-        snake.pop();
-    }     
-};
+        if(score % 5 === 0) snakeSpeed = Math.max(30, snakeSpeed - 10);
+    } else snake.pop();
+}
 
 function drawSnake(){
-    snake.forEach((snakePart, index) => {
+    snake.forEach(snakePart => {
         const gradient = ctx.createRadialGradient(
             snakePart.x + unitSize/2, snakePart.y + unitSize/2, unitSize/6,
             snakePart.x + unitSize/2, snakePart.y + unitSize/2, unitSize/1.2
@@ -137,59 +143,32 @@ function drawSnake(){
 
 function changeDirection(event){
     const keyPressed = event.keyCode;
-    const LEFT = 37;
-    const UP = 38;
-    const RIGHT = 39;
-    const DOWN = 40;
-
-    const goingUp = (yVelocity == -unitSize);
-    const goingDown = (yVelocity == unitSize);
-    const goingRight = (xVelocity == unitSize);
-    const goingLeft = (xVelocity == -unitSize);
+    const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+    const goingUp = yVelocity === -unitSize;
+    const goingDown = yVelocity === unitSize;
+    const goingRight = xVelocity === unitSize;
+    const goingLeft = xVelocity === -unitSize;
 
     switch(true){
-        case(keyPressed == LEFT && !goingRight):
-            xVelocity = -unitSize;
-            yVelocity = 0;
-            break;
-        case(keyPressed == UP && !goingDown):
-            xVelocity = 0;
-            yVelocity = -unitSize;
-            break;
-        case(keyPressed == RIGHT && !goingLeft):
-            xVelocity = unitSize;
-            yVelocity = 0;
-            break;
-        case(keyPressed == DOWN && !goingUp):
-            xVelocity = 0;
-            yVelocity = unitSize;
-            break;
+        case(keyPressed === LEFT && !goingRight): xVelocity=-unitSize; yVelocity=0; break;
+        case(keyPressed === UP && !goingDown): xVelocity=0; yVelocity=-unitSize; break;
+        case(keyPressed === RIGHT && !goingLeft): xVelocity=unitSize; yVelocity=0; break;
+        case(keyPressed === DOWN && !goingUp): xVelocity=0; yVelocity=unitSize; break;
     }
-};
+}
 
 function checkGameOver(){
-    switch(true){
-        case (snake[0].x < 0):
-        case (snake[0].x >= gameWidth):
-        case (snake[0].y < 0):
-        case (snake[0].y >= gameHeight):
-            running = false;
-            break;
-    }
-    for(let i = 1; i < snake.length; i+=1){
-        if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
-            running = false;
-        }
-    }
-};
+    if(snake[0].x < 0 || snake[0].x >= gameWidth || snake[0].y < 0 || snake[0].y >= gameHeight) running=false;
+    for(let i=1; i<snake.length; i++) if(snake[i].x === snake[0].x && snake[i].y === snake[0].y) running=false;
+}
 
 function displayGameOver(){
-    ctx.font = "50px MV Boli";
-    ctx.fillStyle = "rgba(0, 200, 255, 0.6";
+    ctx.font = "30px MV Boli";
+    ctx.fillStyle = "rgba(0, 200, 255, 0.6)";
     ctx.textAlign = "center";
-    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
-    running = false;
-};
+    ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
+    running=false;
+}
 
 function resetGame(){
     score = 0;
@@ -204,17 +183,4 @@ function resetGame(){
         {x:0, y:0}
     ];
     gameStart();
-};
-
-// 👇 Mobil yön butonları
-document.querySelectorAll(".control-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const dir = btn.getAttribute("data-dir");
-    const event = new KeyboardEvent("keydown", {
-      keyCode: dir === "UP" ? 38 :
-               dir === "DOWN" ? 40 :
-               dir === "LEFT" ? 37 : 39
-    });
-    window.dispatchEvent(event);
-  });
-});
+}
