@@ -26,7 +26,6 @@ let snake = [
 ];
 
 const img = new Image();
-// img.src = "./img/ayla-adem.jpeg";
 img.src ="https://i.etsystatic.com/26056260/r/il/06e468/5379971060/il_1080xN.5379971060_kjk7.jpg";
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
@@ -73,29 +72,25 @@ function createFood(){
 };
 
 function drawFood(){
-    // gradientli food (mevcut foodColor kullanılıyor)
     const gradient = ctx.createRadialGradient(
         foodX + unitSize/2, foodY + unitSize/2, unitSize/6, 
         foodX + unitSize/2, foodY + unitSize/2, unitSize/2
     );
-    gradient.addColorStop(0, "white"); // merkezde ışık
+    gradient.addColorStop(0, "white");
     gradient.addColorStop(0.3, foodColor); 
     gradient.addColorStop(1, foodBorder); 
 
     ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.roundRect(foodX, foodY, unitSize, unitSize, 6); // köşeler yuvarlatılmış
+    ctx.roundRect(foodX, foodY, unitSize, unitSize, 6);
     ctx.fill();
     ctx.closePath();
 
-    // parlama efekti
     ctx.shadowColor = "rgba(255, 251, 251, 1)";
-    ctx.shadowBlur = 10
+    ctx.shadowBlur = 10;
     ctx.shadowOffsetX= 2;
     ctx.shadowOffsetY = 2;
     ctx.fill();
-    
-    // shadow reset
     ctx.shadowBlur = 0;
 }
 
@@ -104,14 +99,12 @@ function moveSnake(){
                   y: snake[0].y + yVelocity};
     
     snake.unshift(head);
-    //if food is eaten
     if(snake[0].x == foodX && snake[0].y == foodY){
         score+=1;
         scoreText.textContent = score;
         createFood();
-          if(score % 5 === 0){
+        if(score % 5 === 0){
             snakeSpeed = Math.max(30, snakeSpeed - 10); 
-            // 30 ms’den daha hızlı olmasın diye limit
         }
     }
     else{
@@ -121,7 +114,6 @@ function moveSnake(){
 
 function drawSnake(){
     snake.forEach((snakePart, index) => {
-        // gradientli snake parçası
         const gradient = ctx.createRadialGradient(
             snakePart.x + unitSize/2, snakePart.y + unitSize/2, unitSize/6,
             snakePart.x + unitSize/2, snakePart.y + unitSize/2, unitSize/1.2
@@ -136,7 +128,6 @@ function drawSnake(){
         ctx.fill();
         ctx.closePath();
 
-        // hafif parlama
         ctx.shadowColor = "rgba(234, 245, 246, 0.97)";
         ctx.shadowBlur = 8;
         ctx.fill();
@@ -179,14 +170,8 @@ function changeDirection(event){
 function checkGameOver(){
     switch(true){
         case (snake[0].x < 0):
-            running = false;
-            break;
         case (snake[0].x >= gameWidth):
-            running = false;
-            break;
         case (snake[0].y < 0):
-            running = false;
-            break;
         case (snake[0].y >= gameHeight):
             running = false;
             break;
@@ -220,3 +205,16 @@ function resetGame(){
     ];
     gameStart();
 };
+
+// 👇 Mobil yön butonları
+document.querySelectorAll(".control-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const dir = btn.getAttribute("data-dir");
+    const event = new KeyboardEvent("keydown", {
+      keyCode: dir === "UP" ? 38 :
+               dir === "DOWN" ? 40 :
+               dir === "LEFT" ? 37 : 39
+    });
+    window.dispatchEvent(event);
+  });
+});

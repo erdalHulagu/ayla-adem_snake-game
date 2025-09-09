@@ -1,50 +1,50 @@
-#gameContainer{
-text-align: center;
+#gameContainer {
+  text-align: center;
+}
 
-}
-#gameName{
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+#gameName {
+  font-family: 'Trebuchet MS', Arial, sans-serif;
   font-size: 50px;
   font-weight: bold;
-  background: linear-gradient(135deg, #41b545, #04640cec); /* mavi su gradyanı */
+  background: linear-gradient(135deg, #41b545, #04640cec);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* yazıyı gradyan yap */
-  text-shadow: 2px 2px 5px rgba(0, 100, 255, 0.5),
-               0 0 15px rgba(0, 200, 255, 0.6); /* parlaklık ve derinlik */
-  transition: all 0.3s ease;
-}
-#gameBoard{
-    border: 5px solid;
-    /*color: green;
-    */border-color: rgb(38, 187, 217);
-    border-radius:  8px;
-    /*background-color: rgb(149, 98, 149);
-    */text-shadow: 2px 2px 8px rgba(6, 234, 255, 0.8),               0 0 25px rgba(0, 221, 255, 0.8),               0 0 35px rgba(141, 151, 209, 0.6);
-    -webkit-border-radius:  8px;
-    -moz-border-radius:  8px;
-    -ms-border-radius:  8px;
-    -o-border-radius:  8px;
-}#scoreText {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 50px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #41b545, #04640cec); /* mavi su gradyanı */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* yazıyı gradyan yap */
-  text-shadow: 2px 2px 5px rgba(0, 100, 255, 0.5),
-               0 0 15px rgba(0, 200, 255, 0.6); /* parlaklık ve derinlik */
+  -webkit-text-fill-color: transparent;
+  text-shadow: 3px 3px 8px rgba(0, 180, 255, 0.9),
+               0 0 25px rgba(0, 200, 255, 0.9),
+               0 0 40px rgba(0, 250, 255, 0.8);
   transition: all 0.3s ease;
 }
 
-/* Hover efekti → ışık parlaması */
+#gameBoard {
+  border: 5px solid;
+  border-color: rgb(38, 187, 217);
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(0, 200, 255, 0.9),
+              0 0 45px rgba(0, 255, 200, 0.7);
+}
+
+#scoreText {
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #41b545, #04640cec);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 3px 3px 10px rgba(0, 180, 255, 0.9),
+               0 0 25px rgba(0, 200, 255, 0.9),
+               0 0 40px rgba(0, 250, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
 #scoreText:hover {
-  text-shadow: 2px 2px 8px rgba(0, 106, 255, 0.8),
-               0 0 25px rgba(0, 221, 255, 0.8),
-               0 0 35px rgba(141, 151, 209, 0.6);
-  transform: scale(1.05); /* biraz büyüsün */
+  text-shadow: 3px 3px 12px rgba(0, 150, 255, 1),
+               0 0 30px rgba(0, 221, 255, 1),
+               0 0 45px rgba(141, 151, 209, 1);
+  transform: scale(1.05);
 }
+
 #resetBtn {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: 'Trebuchet MS', Arial, sans-serif;
   font-size: 24px;
   font-weight: bold;
   width: 220px;
@@ -52,24 +52,54 @@ text-align: center;
   border: none;
   border-radius: 15px;
   color: white;
-  background: linear-gradient(145deg, #00c6ff, #0072ff); /* mavi su efekti */
-  box-shadow: 0 8px 15px rgba(0, 115, 255, 0.4), 
-              inset 0 2px 5px rgba(255, 255, 255, 0.4); /* 3D su hissi */
+  background: linear-gradient(145deg, #00c6ff, #0072ff);
+  box-shadow: 0 10px 20px rgba(0, 115, 255, 0.7),
+              inset 0 2px 6px rgba(255, 255, 255, 0.6);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-/* Hover efekti (ışık dalgası gibi) */
 #resetBtn:hover {
   background: linear-gradient(145deg, #1dd1ff, #3773cd);
-  box-shadow: 0 12px 20px rgba(0, 115, 255, 0.6), 
-              inset 0 3px 6px rgba(102, 72, 72, 0.5);
+  box-shadow: 0 14px 25px rgba(0, 115, 255, 0.9),
+              inset 0 3px 8px rgba(255, 255, 255, 0.6);
   transform: translateY(-3px);
 }
 
-/* Basılınca (3D aşağıya iner gibi) */
 #resetBtn:active {
   transform: translateY(2px);
-  box-shadow: 0 5px 10px rgba(0, 115, 255, 0.3), 
-              inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 12px rgba(0, 115, 255, 0.6),
+              inset 0 3px 6px rgba(255, 255, 255, 0.7);
+}
+
+/* 👇 Mobil yön butonları */
+#controls {
+  margin-top: 20px;
+}
+
+#controls .row {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.control-btn {
+  width: 70px;
+  height: 70px;
+  margin: 5px;
+  border-radius: 15px;
+  border: none;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(145deg, #00c6ff, #0072ff);
+  box-shadow: 0 6px 15px rgba(0, 115, 255, 0.8),
+              inset 0 2px 5px rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.control-btn:active {
+  transform: scale(0.9);
+  box-shadow: 0 3px 8px rgba(0, 115, 255, 0.9),
+              inset 0 2px 6px rgba(255, 255, 255, 0.7);
 }
